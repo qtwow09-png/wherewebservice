@@ -1,6 +1,18 @@
 import { GoogleGenAI, GenerateContentResponse } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// API 키는 나중에 설정 가능 (환경변수 또는 사용자 입력)
+let ai: GoogleGenAI | null = null;
+
+// API 키 설정 함수
+export const setApiKey = (apiKey: string) => {
+  ai = new GoogleGenAI({ apiKey });
+};
+
+// 환경변수에서 API 키가 있으면 자동 설정
+const envApiKey = import.meta.env.VITE_GEMINI_API_KEY;
+if (envApiKey) {
+  ai = new GoogleGenAI({ apiKey: envApiKey });
+}
 
 const SYSTEM_INSTRUCTION = `
 당신은 프리미엄 부동산 분석 서비스 '어디살래(Eodi-Sallae)'의 전문 부동산 컨설턴트입니다.
@@ -17,6 +29,10 @@ const SYSTEM_INSTRUCTION = `
 `;
 
 export const sendMessageToGemini = async (message: string, history: { role: string, parts: { text: string }[] }[]): Promise<string> => {
+  if (!ai) {
+    return "API 키가 설정되지 않았습니다. .env 파일에 VITE_GEMINI_API_KEY를 설정해주세요.";
+  }
+
   try {
     // We use the chat feature for context
     const chat = ai.chats.create({

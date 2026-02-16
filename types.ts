@@ -2,7 +2,7 @@ import React from 'react';
 
 export interface NavItem {
   label: string;
-  id: 'hero' | 'dashboard' | 'advisor' | 'report';
+  id: 'hero' | 'magazine' | 'advisor' | 'report';
 }
 
 export interface ChatMessage {

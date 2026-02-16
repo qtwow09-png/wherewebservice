@@ -1,14 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, User, Sparkles, Loader2, Info } from 'lucide-react';
+import { Send, User, Sparkles, Loader2, Info, Search } from 'lucide-react';
 import { ChatMessage } from '../types';
-import { sendMessageToGemini } from '../services/geminiService';
+import { handleUserQuery } from '../services/listingSearchService';
 
 export const AIAdvisor: React.FC = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: 'welcome',
       role: 'model',
-      text: "안녕하세요! '어디살래' 전담 AI 상담사입니다. 예산, 선호하는 라이프스타일, 관심 지역을 말씀해 주시면 고객님께 딱 맞는 집을 찾아드릴게요.",
+      text: "안녕하세요! 🏠 **어디살래** 스마트 매물검색입니다.\n\n서울 지역 **33,309건**의 매물 데이터를 보유하고 있습니다.\n\n**검색 예시:**\n- \"강남구 10억대 아파트\"\n- \"마포구 전세 5억 이하\"\n- \"역삼동 매매 아파트\"\n- \"송파구 오피스텔\"\n\n원하시는 조건을 입력해주세요!",
       timestamp: new Date(),
     }
   ]);
@@ -40,13 +40,8 @@ export const AIAdvisor: React.FC = () => {
     setIsLoading(true);
 
     try {
-      // Prepare history for API
-      const history = messages.map(m => ({
-        role: m.role,
-        parts: [{ text: m.text }]
-      }));
-
-      const responseText = await sendMessageToGemini(userMessage.text, history);
+      // 로컬 매물 검색 서비스 사용
+      const responseText = await handleUserQuery(userMessage.text);
 
       const aiMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
@@ -79,16 +74,16 @@ export const AIAdvisor: React.FC = () => {
         <div className="bg-primary px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-white/10 rounded-lg">
-              <Sparkles className="text-yellow-300" size={24} />
+              <Search className="text-yellow-300" size={24} />
             </div>
             <div>
-              <h2 className="text-white font-bold text-lg">AI 부동산 상담사</h2>
-              <p className="text-indigo-200 text-xs">Powered by Gemini 3</p>
+              <h2 className="text-white font-bold text-lg">스마트 매물검색</h2>
+              <p className="text-indigo-200 text-xs">서울 33,309건 매물 데이터</p>
             </div>
           </div>
           <div className="hidden sm:flex items-center gap-2 text-indigo-200 text-sm bg-white/10 px-3 py-1 rounded-full">
             <Info size={14} />
-            <span>시장 동향, 동네 추천, 예산 설계를 물어보세요</span>
+            <span>지역, 가격, 건물유형으로 검색하세요</span>
           </div>
         </div>
 
@@ -118,7 +113,7 @@ export const AIAdvisor: React.FC = () => {
                    <p className="whitespace-pre-wrap">{msg.text}</p>
                    {msg.role === 'model' && !msg.isError && (
                      <div className="mt-2 text-xs text-slate-400 flex items-center gap-1">
-                        어디살래 AI Intelligence
+                        어디살래 스마트검색
                      </div>
                    )}
                 </div>
@@ -133,7 +128,7 @@ export const AIAdvisor: React.FC = () => {
                  </div>
                  <div className="bg-white p-4 rounded-2xl rounded-tl-none border border-slate-100 shadow-sm flex items-center gap-2">
                     <Loader2 className="animate-spin text-primary" size={16} />
-                    <span className="text-sm text-slate-500">시장 데이터를 분석하고 있습니다...</span>
+                    <span className="text-sm text-slate-500">매물을 검색하고 있습니다...</span>
                  </div>
               </div>
             </div>
@@ -148,7 +143,7 @@ export const AIAdvisor: React.FC = () => {
               type="text"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              placeholder="예: 예산은 월 200만 원 정도고, 도심 근처 조용한 곳을 찾고 있어요..."
+              placeholder="예: 양재동 10억대 아파트, 강남구 전세 5억 이하..."
               className="w-full pl-4 pr-12 py-4 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-slate-700 placeholder:text-slate-400"
               disabled={isLoading}
             />

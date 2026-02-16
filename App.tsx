@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Layout } from './components/Layout';
 import { Hero } from './components/Hero';
-import { Dashboard } from './components/Dashboard';
+import { Magazine } from './components/Magazine';
 import { AIAdvisor } from './components/AIAdvisor';
 import { WeeklyReport } from './components/WeeklyReport';
 
 // Simple view state management
-type View = 'hero' | 'dashboard' | 'advisor' | 'report';
+type View = 'hero' | 'magazine' | 'advisor' | 'report';
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<View>('hero');
@@ -15,8 +15,8 @@ const App: React.FC = () => {
     switch (currentView) {
       case 'hero':
         return <Hero onNavigate={setCurrentView} />;
-      case 'dashboard':
-        return <Dashboard />;
+      case 'magazine':
+        return <Magazine />;
       case 'advisor':
         return <AIAdvisor />;
       case 'report':

@@ -2,7 +2,7 @@ import React from 'react';
 import { ArrowRight, Search, TrendingUp, ShieldCheck, FileText } from 'lucide-react';
 
 interface HeroProps {
-  onNavigate: (view: 'hero' | 'dashboard' | 'advisor' | 'report') => void;
+  onNavigate: (view: 'hero' | 'magazine' | 'advisor' | 'report') => void;
 }
 
 export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
@@ -36,10 +36,10 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
               스마트 위치 검색 <ArrowRight size={20} />
             </button>
             <button
-              onClick={() => onNavigate('dashboard')}
+              onClick={() => onNavigate('magazine')}
               className="w-full sm:w-auto px-8 py-4 bg-white text-slate-700 border border-slate-200 rounded-xl font-semibold hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-center gap-2"
             >
-              시장 통계 보기 <TrendingUp size={20} />
+              투자매거진 <TrendingUp size={20} />
             </button>
             <button
               onClick={() => onNavigate('report')}

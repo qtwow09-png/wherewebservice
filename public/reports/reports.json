@@ -1,0 +1,111 @@
+{
+  "reports": [
+    {
+      "id": "20260211",
+      "title": "서울 부동산 주간 AI 리포트",
+      "subtitle": "2026.02.11",
+      "date": "2026-02-11",
+      "summary": "정부정책 x 시장심리 2축 분석 기반. 총 32,853건 매물 분석 완료. 강남구 최고가(18억 2,417만원). 마포구 최다 매물(2,936건).",
+      "tag": "제8호",
+      "fileName": "부동산_AI리포트_20260211.html",
+      "highlights": {
+        "policyDirection": "유지",
+        "marketSentiment": "상승",
+        "outlook": "중립"
+      },
+      "keyMetrics": {
+        "totalListings": 32853,
+        "avgPrice": "18억 2,417만원",
+        "weeklyChange": "-"
+      },
+      "featured": true
+    },
+    {
+      "id": "20260205",
+      "title": "서울 부동산 주간 AI 리포트",
+      "subtitle": "2026.02.05",
+      "date": "2026-02-05",
+      "summary": "정부정책 x 시장심리 2축 분석 기반. 총 32,853건 매물 분석 완료. 강남구 최고가(26억 1,349만원). 마포구 최다 매물(2,936건).",
+      "tag": "제7호",
+      "fileName": "부동산_AI리포트_20260205.html",
+      "highlights": {
+        "policyDirection": "유지",
+        "marketSentiment": "상승",
+        "outlook": "중립"
+      },
+      "keyMetrics": {
+        "totalListings": 32853,
+        "avgPrice": "26억 1,349만원",
+        "weeklyChange": "-"
+      },
+      "featured": false
+    },
+    {
+      "id": "20260129",
+      "title": "서울 부동산 주간 AI 리포트",
+      "subtitle": "2026.01.29",
+      "date": "2026-01-29",
+      "summary": "정부 2.9만호 공급대책 발표, 그러나 서울 공급은 1,300호(4.5%)에 불과. LH 부채 165조→219조 전망, 공급대책 실효성 D+ 평가. 5월 9일 양도세 중과 유예 종료로 다주택자 매물 출회 예상.",
+      "tag": "제6호",
+      "fileName": "부동산_AI리포트_20260129.html",
+      "highlights": {
+        "policyDirection": "강화",
+        "marketSentiment": "상승",
+        "outlook": "상승 압력"
+      },
+      "keyMetrics": {
+        "totalListings": 67454,
+        "avgPrice": "14.7억",
+        "weeklyChange": "+0.21%",
+        "buyerIndex": 92.5,
+        "jeonseIndex": 107.8
+      },
+      "featured": false,
+      "special": "정부 공급대책 심층 분석"
+    },
+    {
+      "id": "20260123",
+      "title": "서울 부동산 주간 AI 리포트",
+      "subtitle": "2026.01.23",
+      "date": "2026-01-23",
+      "summary": "정부정책 x 시장심리 2축 분석 기반. 총 32,853건 매물 분석 완료. 매수우위지수 92.3, 전세수급지수 106.2. 5월 양도세 유예 종료 앞두고 시장 관망세.",
+      "tag": "제5호",
+      "fileName": "부동산_AI리포트_20260123.html",
+      "highlights": {
+        "policyDirection": "강화",
+        "marketSentiment": "상승",
+        "outlook": "중립"
+      },
+      "keyMetrics": {
+        "totalListings": 32853,
+        "avgPrice": "10.3억",
+        "weeklyChange": "+0.20%",
+        "buyerIndex": 92.3,
+        "jeonseIndex": 106.2
+      },
+      "featured": false
+    },
+    {
+      "id": "20260114",
+      "title": "서울 부동산 주간 AI 리포트",
+      "subtitle": "2026.01.14",
+      "date": "2026-01-14",
+      "summary": "정책 강화 기조 속 49주 연속 상승세 유지. 대출 규제 강화에도 서울 아파트 상승세 지속, 2026년 입주물량 31% 급감으로 전세 대란 우려 확산.",
+      "tag": "제4호",
+      "fileName": "부동산_AI리포트_20260114.html",
+      "highlights": {
+        "policyDirection": "강화",
+        "marketSentiment": "상승",
+        "outlook": "중립"
+      },
+      "keyMetrics": {
+        "buyerIndex": 86.1,
+        "jeonseIndex": 104.9,
+        "weeklyChange": "+0.20%"
+      },
+      "featured": false
+    }
+  ],
+  "nextPublishDate": "2026-02-12",
+  "publishDay": "목요일"
+}

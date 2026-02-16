@@ -8,6 +8,7 @@ export default defineConfig(({ mode }) => {
       server: {
         port: 3000,
         host: '0.0.0.0',
+        allowedHosts: ['visually-scaly-ashlea.ngrok-free.dev', '.ngrok-free.dev', '.ngrok.io'],
       },
       plugins: [react()],
       define: {

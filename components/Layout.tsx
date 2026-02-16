@@ -5,7 +5,7 @@ import { NavItem } from '../types';
 interface LayoutProps {
   children: React.ReactNode;
   currentView: string;
-  onNavigate: (view: 'hero' | 'dashboard' | 'advisor' | 'report') => void;
+  onNavigate: (view: 'hero' | 'magazine' | 'advisor' | 'report') => void;
 }
 
 export const Layout: React.FC<LayoutProps> = ({ children, currentView, onNavigate }) => {
@@ -14,11 +14,11 @@ export const Layout: React.FC<LayoutProps> = ({ children, currentView, onNavigat
   const navItems: NavItem[] = [
     { label: '홈', id: 'hero' },
     { label: '스마트 검색', id: 'advisor' },
-    { label: '시장 분석', id: 'dashboard' },
+    { label: '투자매거진', id: 'magazine' },
     { label: '주간 리포트', id: 'report' },
   ];
 
-  const handleNavClick = (id: 'hero' | 'dashboard' | 'advisor' | 'report') => {
+  const handleNavClick = (id: 'hero' | 'magazine' | 'advisor' | 'report') => {
     onNavigate(id);
     setIsMobileMenuOpen(false);
   };

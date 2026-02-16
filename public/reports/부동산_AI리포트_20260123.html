@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO & 매거진 메타데이터 -->
+    <title>서울 부동산 주간 AI 리포트 (2026.01.W4) | 어디살래 매거진</title>
+    <meta name="description" content="2026년 1월 4주차 서울 부동산 시장 AI 분석. 정부정책과 시장심리 2축 분석 기반 주간 리포트. 매수우위지수 92.3, 51주 연속 상승세.">
+    <meta name="keywords" content="서울 부동산, 아파트 시세, 부동산 전망, AI 분석, 매수우위지수, 전세수급지수, 정부정책">
+    <meta name="author" content="어디살래">
+
+    <!-- Open Graph (SNS 공유) -->
+    <meta property="og:title" content="서울 부동산 주간 AI 리포트 (2026.01.W4)">
+    <meta property="og:description" content="정부정책 x 시장심리 2축 분석 기반 서울 부동산 시장 AI 분석 리포트">
+    <meta property="og:type" content="article">
+    <meta property="article:published_time" content="2026-01-23">
+    <meta property="article:section" content="부동산">
+
+    <!-- 리포트 메타데이터 -->
+    <meta name="report-date" content="2026-01-23">
+    <meta name="report-week" content="2026.01.W4">
+    <meta name="report-version" content="2.1">
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-red: #e74c3c;
+            --accent-green: #27ae60;
+            --accent-yellow: #f39c12;
+            --accent-blue: #3498db;
+            --bg-light: #f8f9fa;
+            --bg-card: #ffffff;
+            --text-dark: #2c3e50;
+            --text-muted: #7f8c8d;
+            --border-color: #dee2e6;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            color: var(--text-dark);
+            background: var(--bg-light);
+        }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(44, 62, 80, 0.3);
+        }
+
+        .header-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+        }
+
+        .header h1 { font-size: 2rem; margin-bottom: 10px; line-height: 1.3; }
+
+        .header-meta {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-top: 15px;
+        }
+
+        .exec-summary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+        }
+
+        .exec-summary h2 { margin-bottom: 20px; font-size: 1.3rem; }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .summary-item {
+            background: rgba(255,255,255,0.15);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .summary-item .label { font-size: 0.85rem; opacity: 0.9; margin-bottom: 5px; }
+        .summary-item .value { font-size: 1.1rem; font-weight: bold; }
+
+        .key-message {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid white;
+        }
+
+        .section {
+            background: var(--bg-card);
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+        }
+
+        .section h2 {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--secondary-color);
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            font-size: 1.4rem;
+        }
+
+        .section h3 {
+            color: var(--primary-color);
+            margin: 25px 0 15px 0;
+            font-size: 1.15rem;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .dash-card {
+            background: linear-gradient(135deg, var(--bg-light) 0%, white 100%);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .dash-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .dash-card .label { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px; }
+        .dash-card .value { font-size: 1.8rem; font-weight: bold; color: var(--primary-color); }
+        .dash-card .change { font-size: 0.85rem; margin-top: 8px; }
+        .dash-card .change.up { color: var(--accent-red); }
+        .dash-card .change.down { color: var(--accent-blue); }
+
+        .policy-signals {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .signal {
+            text-align: center;
+            padding: 15px 10px;
+            border-radius: 10px;
+            background: var(--bg-light);
+        }
+
+        .signal-light {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            margin: 0 auto 8px;
+        }
+
+        .signal-red { background: var(--accent-red); box-shadow: 0 0 15px var(--accent-red); }
+        .signal-yellow { background: var(--accent-yellow); box-shadow: 0 0 15px var(--accent-yellow); }
+        .signal-green { background: var(--accent-green); box-shadow: 0 0 15px var(--accent-green); }
+
+        .signal .title { font-weight: 600; font-size: 0.9rem; }
+        .signal .status { font-size: 0.8rem; color: var(--text-muted); }
+
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 0.9rem; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); }
+        th { background: var(--bg-light); font-weight: 600; color: var(--primary-color); }
+        tr:hover { background: var(--bg-light); }
+
+        .badge { display: inline-block; padding: 4px 10px; border-radius: 15px; font-size: 0.8rem; font-weight: 500; }
+        .badge-red { background: #fde8e8; color: #c0392b; }
+        .badge-green { background: #e8f8f0; color: #1e8449; }
+        .badge-yellow { background: #fef9e7; color: #b7950b; }
+        .badge-blue { background: #ebf5fb; color: #2874a6; }
+
+        .supply-bar { margin: 15px 0; }
+        .supply-bar .year { display: flex; align-items: center; margin: 8px 0; }
+        .supply-bar .year-label { width: 70px; font-weight: 600; font-size: 0.9rem; }
+        .supply-bar .bar-container { flex: 1; background: var(--bg-light); border-radius: 8px; overflow: hidden; height: 28px; }
+        .supply-bar .bar { height: 100%; border-radius: 8px; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px; color: white; font-weight: 600; font-size: 0.8rem; }
+        .bar-2025 { background: var(--secondary-color); width: 100%; }
+        .bar-2026 { background: var(--accent-yellow); width: 68.6%; }
+        .bar-2027 { background: var(--accent-red); width: 58.7%; }
+
+        .heatmap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0; }
+        .heat-zone { padding: 15px; border-radius: 10px; text-align: center; }
+        .heat-high { background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; }
+        .heat-mid { background: linear-gradient(135deg, #f39c12, #d68910); color: white; }
+        .heat-low { background: linear-gradient(135deg, #27ae60, #1e8449); color: white; }
+        .heat-zone h5 { margin-bottom: 10px; font-size: 0.95rem; }
+        .heat-zone ul { list-style: none; font-size: 0.85rem; }
+        .heat-zone li { padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.2); }
+
+        .conclusion-box {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+        .conclusion-box h4 { margin-bottom: 15px; font-size: 1.1rem; }
+        .conclusion-box ul { list-style: none; }
+        .conclusion-box li { padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.2); }
+        .conclusion-highlight { margin-top: 15px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 8px; }
+
+        .chart-container { background: var(--bg-light); padding: 20px; border-radius: 12px; margin: 20px 0; }
+
+        .disclaimer {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 0.85rem;
+            color: #856404;
+        }
+
+        .footer { text-align: center; padding: 30px; color: var(--text-muted); font-size: 0.85rem; }
+        .footer-brand { font-size: 1.2rem; font-weight: bold; color: var(--primary-color); margin-bottom: 10px; }
+
+        @media (max-width: 768px) {
+            .summary-grid { grid-template-columns: 1fr; }
+            .policy-signals { grid-template-columns: repeat(2, 1fr); }
+            .heatmap { grid-template-columns: 1fr; }
+            .header h1 { font-size: 1.5rem; }
+            .container { padding: 15px; }
+        }
+
+        @media print {
+            .container { max-width: 100%; }
+            .section { break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <span class="header-badge">어디살래 매거진 | AI 리포트</span>
+            <h1>서울 부동산 주간 AI 리포트</h1>
+            <p style="font-size: 1.1rem; opacity: 0.95;">정부정책 x 시장심리 2축 분석 기반</p>
+            <div class="header-meta">
+                <span><strong>발행일:</strong> 2026-01-23 (금)</span>
+                <span><strong>분석 기준:</strong> 2026.01.W4</span>
+                <span><strong>제5호</strong></span>
+            </div>
+        </header>
+
+        <div class="exec-summary">
+            <h2>Executive Summary</h2>
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <div class="label">정책 방향</div>
+                    <div class="value">강화</div>
+                </div>
+                <div class="summary-item">
+                    <div class="label">시장 심리</div>
+                    <div class="value">상승</div>
+                </div>
+                <div class="summary-item">
+                    <div class="label">종합 전망</div>
+                    <div class="value">상승 압력</div>
+                </div>
+            </div>
+            <div class="key-message">
+                <strong>이번 주 핵심 메시지:</strong><br>
+                - 대출 규제 강화에도 서울 아파트 <strong>51주 연속 상승세</strong> 유지<br>
+                - 매수우위지수 <strong>92.3</strong> 기록, 7주 연속 상승<br>
+                - 5월 9일 <strong>양도세 중과 유예 종료</strong> 예정으로 매물 출회 기대
+            </div>
+        </div>
+
+        <section class="section">
+            <h2>Part 1: 정부정책 동향</h2>
+
+            <h3>정책 신호등</h3>
+            <div class="policy-signals">
+                <div class="signal">
+                    <div class="signal-light signal-red"></div>
+                    <div class="title">대출규제</div>
+                    <div class="status">강화</div>
+                </div>
+                <div class="signal">
+                    <div class="signal-light signal-red"></div>
+                    <div class="title">세금정책</div>
+                    <div class="status">강화예정</div>
+                </div>
+                <div class="signal">
+                    <div class="signal-light signal-green"></div>
+                    <div class="title">공급정책</div>
+                    <div class="status">완화</div>
+                </div>
+                <div class="signal">
+                    <div class="signal-light signal-red"></div>
+                    <div class="title">규제지역</div>
+                    <div class="status">확대</div>
+                </div>
+            </div>
+
+            <h3>이번 주 주요 정책</h3>
+            <table>
+                <thead>
+                    <tr><th>정책</th><th>방향</th><th>영향</th><th>내용</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>양도세 중과 유예 종료</td>
+                        <td><span class="badge badge-red">강화</span></td>
+                        <td>매우 높음</td>
+                        <td>5월 9일 종료 확정, 2주택+20%p, 3주택+30%p 중과</td>
+                    </tr>
+                    <tr>
+                        <td>스트레스 DSR 3단계</td>
+                        <td><span class="badge badge-red">강화</span></td>
+                        <td>높음</td>
+                        <td>스트레스 금리 1.5% 전액 반영, 대출한도 약 1.2억 감소</td>
+                    </tr>
+                    <tr>
+                        <td>주담대 위험가중치</td>
+                        <td><span class="badge badge-red">강화</span></td>
+                        <td>높음</td>
+                        <td>15%에서 20%로 상향, 은행 대출 여력 감소</td>
+                    </tr>
+                    <tr>
+                        <td>2주택자 주담대</td>
+                        <td><span class="badge badge-red">강화</span></td>
+                        <td>높음</td>
+                        <td>주택구매 목적 대출 전면 금지</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>정책 캘린더 (향후 6개월)</h3>
+            <div class="mermaid">
+gantt
+    title 2026년 상반기 정책 일정
+    dateFormat YYYY-MM-DD
+    section 대출
+    스트레스DSR 3단계 시행중 :active, 2026-01-01, 180d
+    지방 2단계 한시유지 :2026-01-01, 180d
+    section 세금
+    양도세 중과 유예 종료 :crit, 2026-05-09, 1d
+    다주택자 중과 재시행 :crit, 2026-05-10, 60d
+    section 공급
+    소규모 정비 완화 :2026-02-01, 60d
+            </div>
+
+            <div style="background: #fde8e8; padding: 15px; border-radius: 8px; border-left: 4px solid #e74c3c; margin-top: 15px;">
+                <strong>핵심 정책 변화:</strong> 이재명 대통령, 다주택자 양도세 중과 유예 5월 9일 종료 확정<br>
+                <strong>시장 영향:</strong> 5월 이전 다주택자 매물 출회 예상, 단기 공급 증가 가능성
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Part 2: 시장심리 분석</h2>
+
+            <h3>핵심 지표 현황</h3>
+            <div class="dashboard">
+                <div class="dash-card">
+                    <div class="label">매수우위지수</div>
+                    <div class="value">92.3</div>
+                    <div class="change up">+3.1 (7주 연속 상승)</div>
+                </div>
+                <div class="dash-card">
+                    <div class="label">전세수급지수</div>
+                    <div class="value">106.2</div>
+                    <div class="change up">+1.3 (수요초과)</div>
+                </div>
+                <div class="dash-card">
+                    <div class="label">매매가 변동률</div>
+                    <div class="value">+0.18%</div>
+                    <div class="change up">51주 연속 상승</div>
+                </div>
+                <div class="dash-card">
+                    <div class="label">전세가 변동률</div>
+                    <div class="value">+0.14%</div>
+                    <div class="change up">49주 연속 상승</div>
+                </div>
+            </div>
+
+            <h3>주간 가격변동률 추이</h3>
+            <div class="chart-container">
+                <canvas id="priceChart" height="120"></canvas>
+            </div>
+
+            <h3>구별 상승률 순위</h3>
+            <table>
+                <thead>
+                    <tr><th>순위</th><th>구</th><th>상승률</th><th>특이사항</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>마포구</td><td><span class="badge badge-red">+0.42%</span></td><td>재개발 호재</td></tr>
+                    <tr><td>2</td><td>동작구</td><td><span class="badge badge-red">+0.38%</span></td><td>흑석뉴타운</td></tr>
+                    <tr><td>3</td><td>강동구</td><td><span class="badge badge-red">+0.35%</span></td><td>올림픽파크 인근</td></tr>
+                    <tr><td>4</td><td>성동구</td><td><span class="badge badge-red">+0.32%</span></td><td>왕십리 재개발</td></tr>
+                    <tr><td>5</td><td>광진구</td><td><span class="badge badge-yellow">+0.28%</span></td><td>-</td></tr>
+                </tbody>
+            </table>
+
+            <h3>매물 현황</h3>
+            <div class="dashboard">
+                <div class="dash-card">
+                    <div class="label">매매 매물</div>
+                    <div class="value">25,057</div>
+                </div>
+                <div class="dash-card">
+                    <div class="label">전세 매물</div>
+                    <div class="value">20,459</div>
+                </div>
+                <div class="dash-card">
+                    <div class="label">월세 매물</div>
+                    <div class="value">21,938</div>
+                </div>
+                <div class="dash-card">
+                    <div class="label">총 매물</div>
+                    <div class="value">67,454</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Part 3: 공급 분석</h2>
+
+            <h3>서울 아파트 입주물량 전망</h3>
+            <div class="supply-bar">
+                <div class="year">
+                    <span class="year-label">2025년</span>
+                    <div class="bar-container">
+                        <div class="bar bar-2025">42,577가구</div>
+                    </div>
+                </div>
+                <div class="year">
+                    <span class="year-label">2026년</span>
+                    <div class="bar-container">
+                        <div class="bar bar-2026">29,195가구 (-31%)</div>
+                    </div>
+                </div>
+                <div class="year">
+                    <span class="year-label">2027년</span>
+                    <div class="bar-container">
+                        <div class="bar bar-2027">약 25,000가구 (-14%)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: #fef9e7; padding: 15px; border-radius: 8px; border-left: 4px solid #f39c12; margin-top: 15px;">
+                <strong>공급 리스크:</strong> 주택산업연구원은 2026년을 '본격적인 입주 가뭄의 시작점'으로 규정<br>
+                <strong>전세가격 상승 전망:</strong> 수도권 +3.8%, 서울 +4.7%
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Part 4: 구별 가격 현황</h2>
+            <h3>가격 순위 (평균 호가 기준)</h3>
+            <table>
+                <thead><tr><th>순위</th><th>구</th><th>매물수</th><th>평균가</th><th>중앙값</th></tr></thead>
+                <tbody>
+                    <tr><td>1</td><td>강남구</td><td>1,658</td><td>43억 5,768만원</td><td>33억원</td></tr>
+                    <tr><td>2</td><td>서초구</td><td>897</td><td>37억 9,440만원</td><td>28억원</td></tr>
+                    <tr><td>3</td><td>용산구</td><td>1,488</td><td>29억 8,051만원</td><td>18억원</td></tr>
+                    <tr><td>4</td><td>종로구</td><td>1,360</td><td>21억 339만원</td><td>12억 2,000만원</td></tr>
+                    <tr><td>5</td><td>송파구</td><td>1,168</td><td>17억 4,958만원</td><td>15억 2,500만원</td></tr>
+                    <tr><td>6</td><td>마포구</td><td>2,228</td><td>16억 6,622만원</td><td>13억 5,000만원</td></tr>
+                    <tr><td>7</td><td>광진구</td><td>891</td><td>16억 4,714만원</td><td>12억 1,360만원</td></tr>
+                    <tr><td>8</td><td>성동구</td><td>1,244</td><td>15억 5,173만원</td><td>11억 8,000만원</td></tr>
+                    <tr><td>9</td><td>동작구</td><td>1,100</td><td>15억 931만원</td><td>14억 2,000만원</td></tr>
+                    <tr><td>10</td><td>강동구</td><td>1,113</td><td>14억 5,309만원</td><td>13억 7,000만원</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2>Part 5: 지역별 분석</h2>
+            <h3>서울시 구별 가격대 분류</h3>
+            <div class="heatmap">
+                <div class="heat-zone heat-high">
+                    <h5>고가 지역</h5>
+                    <ul><li>강남구 43.6억</li><li>서초구 37.9억</li><li>용산구 29.8억</li><li>종로구 21.0억</li></ul>
+                    <p style="margin-top: 8px; font-size: 0.8rem;">평균 20억+</p>
+                </div>
+                <div class="heat-zone heat-mid">
+                    <h5>중가 지역</h5>
+                    <ul><li>송파구 17.5억</li><li>마포구 16.7억</li><li>광진구 16.5억</li><li>성동구 15.5억</li></ul>
+                    <p style="margin-top: 8px; font-size: 0.8rem;">평균 15-20억</p>
+                </div>
+                <div class="heat-zone heat-low">
+                    <h5>저가 지역</h5>
+                    <ul><li>금천구 5.4억</li><li>노원구 4.9억</li><li>강북구 4.5억</li><li>도봉구 4.3억</li></ul>
+                    <p style="margin-top: 8px; font-size: 0.8rem;">평균 6억 미만</p>
+                </div>
+            </div>
+
+            <h3>구별 매물 현황</h3>
+            <div class="chart-container">
+                <canvas id="listingChart" height="120"></canvas>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Part 6: 종합 전망</h2>
+
+            <h3>2축 종합 분석</h3>
+            <div class="conclusion-box">
+                <h4>2026년 1월 4주차 현재 상황</h4>
+                <ul>
+                    <li><strong>정책 방향:</strong> 강화 기조 (대출규제 + 양도세 중과 재시행 예정)</li>
+                    <li><strong>시장 심리:</strong> 매수세 강화 (매수우위지수 92.3, 7주 연속 상승)</li>
+                    <li><strong>공급 상황:</strong> 심각한 공급 부족 예상 (입주 가뭄)</li>
+                </ul>
+                <div class="conclusion-highlight">
+                    <strong>종합 전망:</strong><br>
+                    5월 양도세 중과 재시행 전까지 다주택자 매물 출회 예상. 단기적으로 매물 증가 가능성 있으나,<br>
+                    공급 부족 기조로 인해 서울 핵심지역 중심 상승 압력 지속 전망.
+                </div>
+            </div>
+
+            <h3>단기/중기 전망</h3>
+            <table>
+                <thead>
+                    <tr><th>기간</th><th>전망</th><th>근거</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>단기 (1개월)</strong></td>
+                        <td><span class="badge badge-yellow">보합~소폭상승</span></td>
+                        <td>양도세 유예 종료 전 관망세</td>
+                    </tr>
+                    <tr>
+                        <td><strong>중기 (3개월)</strong></td>
+                        <td><span class="badge badge-red">상승 압력</span></td>
+                        <td>공급 부족 본격화, 전세가 상승 동반</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>주요 리스크 요인</h3>
+            <ul>
+                <li><strong>상승 리스크:</strong> 공급 부족 심화, 전세 대란, 금리 인하 기대</li>
+                <li><strong>하락 리스크:</strong> 양도세 중과 재시행, 추가 대출 규제, 경기 침체</li>
+            </ul>
+        </section>
+
+        <div class="disclaimer">
+            <strong>면책 조항:</strong> 본 분석은 공개된 데이터를 기반으로 한 참고 자료이며, 투자 결정은 개인의 판단과 책임 하에 이루어져야 합니다.
+            어디살래는 본 리포트로 인한 투자 손실에 대해 책임지지 않습니다.
+        </div>
+
+        <section class="section" style="background: var(--bg-light);">
+            <h2 style="border-bottom: none; margin-bottom: 15px;">데이터 출처</h2>
+            <ul style="font-size: 0.9rem; color: var(--text-muted);">
+                <li>KB부동산 데이터허브 (data.kbland.kr)</li>
+                <li>한국부동산원 R-ONE (reb.or.kr/r-one)</li>
+                <li>네이버 부동산 (land.naver.com)</li>
+                <li>국토교통부 실거래가 공개시스템</li>
+                <li>부동산R114, 주택산업연구원</li>
+            </ul>
+        </section>
+
+        <footer class="footer">
+            <div class="footer-brand">어디살래</div>
+            <p>서울 부동산 주간 AI 리포트 | 2026-01-23 발행</p>
+            <p>2026 어디살래. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+
+        const priceCtx = document.getElementById('priceChart').getContext('2d');
+        new Chart(priceCtx, {
+            type: 'line',
+            data: {
+                labels: ['12/8', '12/15', '12/22', '12/29', '1/5', '1/12', '1/19'],
+                datasets: [{
+                    label: '주간 변동률 (%)',
+                    data: [0.19, 0.17, 0.21, 0.22, 0.20, 0.19, 0.18],
+                    borderColor: '#e74c3c',
+                    backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 5,
+                    pointBackgroundColor: '#e74c3c'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: true, position: 'top' } },
+                scales: {
+                    y: { beginAtZero: true, max: 0.35, ticks: { callback: value => value + '%' } }
+                }
+            }
+        });
+
+        const listingCtx = document.getElementById('listingChart').getContext('2d');
+        new Chart(listingCtx, {
+            type: 'bar',
+            data: {
+                labels: ['마포', '강남', '용산', '성북', '송파', '서대문', '강동', '은평', '동대문', '동작'],
+                datasets: [{
+                    label: '매물수',
+                    data: [5914, 4920, 3889, 3881, 3374, 3364, 3331, 3290, 3178, 3153],
+                    backgroundColor: ['#3498db', '#e74c3c', '#2ecc71', '#f39c12', '#9b59b6', '#1abc9c', '#e67e22', '#34495e', '#16a085', '#c0392b'],
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+    </script>
+</body>
+</html>

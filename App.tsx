@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
+import { AuthProvider } from './context/AuthContext';
 import { Layout } from './components/Layout';
 import { Hero } from './components/Hero';
 import { Magazine } from './components/Magazine';
 import { AIAdvisor } from './components/AIAdvisor';
 import { WeeklyReport } from './components/WeeklyReport';
-
-// Simple view state management
-type View = 'hero' | 'magazine' | 'advisor' | 'report';
+import { AdminPanel } from './components/AdminPanel';
+import type { View } from './types';
 
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<View>('hero');
@@ -21,15 +21,19 @@ const App: React.FC = () => {
         return <AIAdvisor />;
       case 'report':
         return <WeeklyReport />;
+      case 'admin':
+        return <AdminPanel />;
       default:
         return <Hero onNavigate={setCurrentView} />;
     }
   };
 
   return (
-    <Layout currentView={currentView} onNavigate={setCurrentView}>
-      {renderView()}
-    </Layout>
+    <AuthProvider>
+      <Layout currentView={currentView} onNavigate={setCurrentView}>
+        {renderView()}
+      </Layout>
+    </AuthProvider>
   );
 };
 

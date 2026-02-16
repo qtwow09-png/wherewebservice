@@ -1,15 +1,20 @@
-import React from 'react';
-import { Home, BarChart2, MessageSquare, Menu, X, Share2, UserCircle } from 'lucide-react';
-import { NavItem } from '../types';
+import React, { useState } from 'react';
+import { Home, Menu, X, Share2 } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+import { AuthModal } from './AuthModal';
+import { UserMenu } from './UserMenu';
+import type { NavItem, View } from '../types';
 
 interface LayoutProps {
   children: React.ReactNode;
   currentView: string;
-  onNavigate: (view: 'hero' | 'magazine' | 'advisor' | 'report') => void;
+  onNavigate: (view: View) => void;
 }
 
 export const Layout: React.FC<LayoutProps> = ({ children, currentView, onNavigate }) => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [authModal, setAuthModal] = useState<'login' | 'signup' | null>(null);
+  const { user, profile, loading } = useAuth();
 
   const navItems: NavItem[] = [
     { label: '홈', id: 'hero' },
@@ -18,7 +23,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, currentView, onNavigat
     { label: '주간 리포트', id: 'report' },
   ];
 
-  const handleNavClick = (id: 'hero' | 'magazine' | 'advisor' | 'report') => {
+  const handleNavClick = (id: View) => {
     onNavigate(id);
     setIsMobileMenuOpen(false);
   };
@@ -36,8 +41,8 @@ export const Layout: React.FC<LayoutProps> = ({ children, currentView, onNavigat
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
-            <div 
-              className="flex items-center gap-2 cursor-pointer" 
+            <div
+              className="flex items-center gap-2 cursor-pointer"
               onClick={() => handleNavClick('hero')}
             >
               <div className="bg-primary text-white p-2 rounded-lg">
@@ -65,7 +70,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, currentView, onNavigat
               </nav>
 
               <div className="h-4 w-px bg-slate-200 mx-2"></div>
-              
+
               {/* Actions */}
               <div className="flex items-center gap-3">
                 <button
@@ -75,12 +80,27 @@ export const Layout: React.FC<LayoutProps> = ({ children, currentView, onNavigat
                 >
                   <Share2 size={18} />
                 </button>
-                <button className="text-sm font-semibold text-slate-600 hover:text-primary transition-colors">
-                  로그인
-                </button>
-                <button className="text-sm font-semibold bg-primary text-white px-4 py-2 rounded-full hover:bg-primary-hover transition-colors shadow-md shadow-primary/20">
-                  회원가입
-                </button>
+
+                {loading ? (
+                  <div className="w-20 h-8 bg-slate-100 rounded-full animate-pulse" />
+                ) : user && profile ? (
+                  <UserMenu onNavigate={handleNavClick} />
+                ) : (
+                  <>
+                    <button
+                      onClick={() => setAuthModal('login')}
+                      className="text-sm font-semibold text-slate-600 hover:text-primary transition-colors"
+                    >
+                      로그인
+                    </button>
+                    <button
+                      onClick={() => setAuthModal('signup')}
+                      className="text-sm font-semibold bg-primary text-white px-4 py-2 rounded-full hover:bg-primary-hover transition-colors shadow-md shadow-primary/20"
+                    >
+                      회원가입
+                    </button>
+                  </>
+                )}
               </div>
             </div>
 
@@ -121,12 +141,28 @@ export const Layout: React.FC<LayoutProps> = ({ children, currentView, onNavigat
                 </button>
               ))}
               <div className="border-t border-slate-100 my-4 pt-4 flex flex-col gap-3">
-                <button className="w-full text-center py-3 font-semibold text-slate-600 hover:bg-slate-50 rounded-xl">
-                  로그인
-                </button>
-                <button className="w-full text-center py-3 font-semibold bg-primary text-white rounded-xl shadow-md">
-                  회원가입
-                </button>
+                {loading ? (
+                  <div className="w-full h-12 bg-slate-100 rounded-xl animate-pulse" />
+                ) : user && profile ? (
+                  <div className="px-4">
+                    <UserMenu onNavigate={handleNavClick} />
+                  </div>
+                ) : (
+                  <>
+                    <button
+                      onClick={() => { setAuthModal('login'); setIsMobileMenuOpen(false); }}
+                      className="w-full text-center py-3 font-semibold text-slate-600 hover:bg-slate-50 rounded-xl"
+                    >
+                      로그인
+                    </button>
+                    <button
+                      onClick={() => { setAuthModal('signup'); setIsMobileMenuOpen(false); }}
+                      className="w-full text-center py-3 font-semibold bg-primary text-white rounded-xl shadow-md"
+                    >
+                      회원가입
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -142,7 +178,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, currentView, onNavigat
       <footer className="bg-white border-t border-slate-200 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="text-slate-500 text-sm">
-            © {new Date().getFullYear()} 어디살래 (Eodi-Sallae). All rights reserved.
+            &copy; {new Date().getFullYear()} 어디살래 (Eodi-Sallae). All rights reserved.
           </div>
           <div className="flex space-x-6 text-slate-400 text-sm">
             <a href="#" className="hover:text-primary transition-colors">개인정보처리방침</a>
@@ -151,6 +187,15 @@ export const Layout: React.FC<LayoutProps> = ({ children, currentView, onNavigat
           </div>
         </div>
       </footer>
+
+      {/* Auth Modal */}
+      {authModal && (
+        <AuthModal
+          mode={authModal}
+          onClose={() => setAuthModal(null)}
+          onSwitch={() => setAuthModal(authModal === 'login' ? 'signup' : 'login')}
+        />
+      )}
     </div>
   );
 };

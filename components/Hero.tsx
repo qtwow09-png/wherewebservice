@@ -1,8 +1,9 @@
 import React from 'react';
 import { ArrowRight, Search, TrendingUp, ShieldCheck, FileText } from 'lucide-react';
+import type { View } from '../types';
 
 interface HeroProps {
-  onNavigate: (view: 'hero' | 'magazine' | 'advisor' | 'report') => void;
+  onNavigate: (view: View) => void;
 }
 
 export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {

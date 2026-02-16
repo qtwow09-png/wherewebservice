@@ -1,7 +1,7 @@
 import { supabase } from './supabaseClient';
 import type { UserProfile } from '../types';
 
-// 회원가입
+// 회원가입 (프로필은 DB 트리거가 자동 생성)
 export async function signUp(email: string, password: string, nickname: string) {
   const { data, error } = await supabase.auth.signUp({
     email,
@@ -9,18 +9,6 @@ export async function signUp(email: string, password: string, nickname: string) 
     options: { data: { nickname } },
   });
   if (error) throw error;
-
-  // 프로필 생성 (status: pending → 관리자 승인 대기)
-  if (data.user) {
-    const { error: profileError } = await supabase.from('profiles').insert({
-      id: data.user.id,
-      email,
-      nickname,
-      role: 'user',
-      status: 'pending',
-    });
-    if (profileError) throw profileError;
-  }
   return data;
 }
 

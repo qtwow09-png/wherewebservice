@@ -25,57 +25,70 @@ CREATE TABLE IF NOT EXISTS messages (
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
--- 3. Row Level Security (RLS) 활성화
+-- 3. 회원가입 시 프로필 자동 생성 트리거 (SECURITY DEFINER로 RLS 우회)
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS TRIGGER AS $$
+BEGIN
+  INSERT INTO public.profiles (id, email, nickname, role, status)
+  VALUES (
+    NEW.id,
+    NEW.email,
+    COALESCE(NEW.raw_user_meta_data->>'nickname', '사용자'),
+    'user',
+    'pending'
+  );
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+CREATE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+
+-- 4. Row Level Security (RLS) 활성화
 ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE messages ENABLE ROW LEVEL SECURITY;
 
--- 4. profiles RLS 정책
--- 누구나 자기 프로필 읽기 가능
+-- 5. profiles RLS 정책
 CREATE POLICY "Users can read own profile"
   ON profiles FOR SELECT
   USING (auth.uid() = id);
 
--- 관리자는 모든 프로필 읽기 가능
 CREATE POLICY "Admins can read all profiles"
   ON profiles FOR SELECT
   USING (
     EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin')
   );
 
--- 프로필 생성은 인증된 사용자
 CREATE POLICY "Users can insert own profile"
   ON profiles FOR INSERT
   WITH CHECK (auth.uid() = id);
 
--- 관리자는 모든 프로필 수정 가능 (승인/거절)
 CREATE POLICY "Admins can update all profiles"
   ON profiles FOR UPDATE
   USING (
     EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin')
   );
 
--- 본인 프로필 수정
 CREATE POLICY "Users can update own profile"
   ON profiles FOR UPDATE
   USING (auth.uid() = id);
 
--- 5. messages RLS 정책
--- 자기 메시지 읽기
+-- 6. messages RLS 정책
 CREATE POLICY "Users can read own messages"
   ON messages FOR SELECT
   USING (auth.uid() = sender_id OR auth.uid() = receiver_id);
 
--- 메시지 보내기
 CREATE POLICY "Users can send messages"
   ON messages FOR INSERT
   WITH CHECK (auth.uid() = sender_id);
 
--- 메시지 읽음 처리 (수신자만)
 CREATE POLICY "Receivers can update message read status"
   ON messages FOR UPDATE
   USING (auth.uid() = receiver_id);
 
--- 6. 인덱스
+-- 7. 인덱스
 CREATE INDEX IF NOT EXISTS idx_profiles_status ON profiles(status);
 CREATE INDEX IF NOT EXISTS idx_profiles_role ON profiles(role);
 CREATE INDEX IF NOT EXISTS idx_messages_receiver ON messages(receiver_id, is_read);

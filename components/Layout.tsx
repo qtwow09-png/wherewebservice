@@ -9,12 +9,13 @@ interface LayoutProps {
   children: React.ReactNode;
   currentView: string;
   onNavigate: (view: View) => void;
+  showGatePopup: boolean;
+  onCloseGatePopup: () => void;
 }
 
-export const Layout: React.FC<LayoutProps> = ({ children, currentView, onNavigate }) => {
+export const Layout: React.FC<LayoutProps> = ({ children, currentView, onNavigate, showGatePopup, onCloseGatePopup }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [authModal, setAuthModal] = useState<'login' | 'signup' | null>(null);
-  const [showGatePopup, setShowGatePopup] = useState(true);
   const { user, profile, loading } = useAuth();
 
   const navItems: NavItem[] = [
@@ -203,7 +204,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, currentView, onNavigat
                   <p className="text-indigo-200 text-sm">어디살래 - AI 부동산 인사이트</p>
                 </div>
               </div>
-              <button onClick={() => setShowGatePopup(false)} className="text-white/70 hover:text-white transition-colors" title="닫기">
+              <button onClick={onCloseGatePopup} className="text-white/70 hover:text-white transition-colors" title="닫기">
                 <X size={22} />
               </button>
             </div>

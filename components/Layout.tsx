@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Home, Menu, X, Share2 } from 'lucide-react';
+import { Home, Menu, X, Share2, Lock } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { AuthModal } from './AuthModal';
 import { UserMenu } from './UserMenu';
@@ -187,6 +187,58 @@ export const Layout: React.FC<LayoutProps> = ({ children, currentView, onNavigat
           </div>
         </div>
       </footer>
+
+      {/* 비로그인 차단 팝업 */}
+      {!loading && !user && (
+        <div className="fixed inset-0 z-[90] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden">
+            <div className="bg-primary px-6 py-5 flex items-center gap-3">
+              <div className="p-2 bg-white/10 rounded-lg">
+                <Lock className="text-yellow-300" size={24} />
+              </div>
+              <div>
+                <h2 className="text-white font-bold text-lg">회원 전용 서비스</h2>
+                <p className="text-indigo-200 text-sm">어디살래 - AI 부동산 인사이트</p>
+              </div>
+            </div>
+            <div className="p-6">
+              <p className="text-slate-700 leading-relaxed text-sm whitespace-pre-line">
+                본 서비스는 <strong>강남여의주의 부동산 비밀과외</strong> 네이버 프리미엄 컨텐츠 유료회원들만 이용하실 수 있습니다.{'\n\n'}네이버 프리미엄 컨텐츠 아이디와 동일한 ID로 회원가입후 승인을 받으면 이용하실 수 있습니다.{'\n\n'}승인처리는 2~3일 가량 시일이 걸릴 수 있으니 양해 부탁 드립니다.
+              </p>
+              <div className="flex gap-3 mt-6">
+                <button
+                  onClick={() => setAuthModal('login')}
+                  className="flex-1 py-3 border border-primary text-primary rounded-xl font-semibold hover:bg-primary/5 transition-colors"
+                >
+                  로그인
+                </button>
+                <button
+                  onClick={() => setAuthModal('signup')}
+                  className="flex-1 py-3 bg-primary text-white rounded-xl font-semibold hover:bg-primary-hover transition-colors shadow-md shadow-primary/20"
+                >
+                  회원가입
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 승인 대기/거절 안내 */}
+      {!loading && user && profile && profile.status === 'pending' && profile.role !== 'admin' && (
+        <div className="fixed inset-0 z-[90] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden">
+            <div className="bg-amber-500 px-6 py-5">
+              <h2 className="text-white font-bold text-lg">승인 대기중</h2>
+            </div>
+            <div className="p-6">
+              <p className="text-slate-700 leading-relaxed text-sm">
+                회원가입이 완료되었습니다. 관리자 승인 후 서비스를 이용하실 수 있습니다.{'\n\n'}승인처리는 2~3일 가량 시일이 걸릴 수 있으니 양해 부탁 드립니다.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Auth Modal */}
       {authModal && (

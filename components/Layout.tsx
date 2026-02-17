@@ -14,6 +14,7 @@ interface LayoutProps {
 export const Layout: React.FC<LayoutProps> = ({ children, currentView, onNavigate }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [authModal, setAuthModal] = useState<'login' | 'signup' | null>(null);
+  const [showGatePopup, setShowGatePopup] = useState(true);
   const { user, profile, loading } = useAuth();
 
   const navItems: NavItem[] = [
@@ -189,17 +190,22 @@ export const Layout: React.FC<LayoutProps> = ({ children, currentView, onNavigat
       </footer>
 
       {/* 비로그인 차단 팝업 */}
-      {!loading && !user && (
+      {!loading && !user && showGatePopup && (
         <div className="fixed inset-0 z-[90] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden">
-            <div className="bg-primary px-6 py-5 flex items-center gap-3">
-              <div className="p-2 bg-white/10 rounded-lg">
-                <Lock className="text-yellow-300" size={24} />
+            <div className="bg-primary px-6 py-5 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-white/10 rounded-lg">
+                  <Lock className="text-yellow-300" size={24} />
+                </div>
+                <div>
+                  <h2 className="text-white font-bold text-lg">회원 전용 서비스</h2>
+                  <p className="text-indigo-200 text-sm">어디살래 - AI 부동산 인사이트</p>
+                </div>
               </div>
-              <div>
-                <h2 className="text-white font-bold text-lg">회원 전용 서비스</h2>
-                <p className="text-indigo-200 text-sm">어디살래 - AI 부동산 인사이트</p>
-              </div>
+              <button onClick={() => setShowGatePopup(false)} className="text-white/70 hover:text-white transition-colors" title="닫기">
+                <X size={22} />
+              </button>
             </div>
             <div className="p-6">
               <p className="text-slate-700 leading-relaxed text-sm whitespace-pre-line">

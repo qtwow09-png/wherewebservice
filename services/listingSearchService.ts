@@ -185,14 +185,52 @@ function parseSearchQuery(query: string): SearchQuery {
   return result;
 }
 
-// 검색 가능 텍스트 생성
-function getSearchableText(listing: Listing): string {
-  return [
-    listing.구 || '',
-    listing.동 || '',
-    listing.단지명 || '',
-    listing.소재지 || '',
-  ].join(' ');
+// 키워드가 매물의 주요 필드(구, 동, 단지명)에 매칭되는지 확인
+// 소재지는 제외 (도로명에 의한 오매칭 방지: "역삼로" → "역삼" 오매칭 등)
+function keywordMatchesListing(keyword: string, listing: Listing): boolean {
+  // 구 매칭
+  if (listing.구 && listing.구.includes(keyword)) return true;
+
+  // 동 매칭 (동_방향 형식에서 기본 동명 추출: "역삼동_남동" → "역삼동")
+  if (listing.동) {
+    const dongBase = listing.동.split('_')[0];
+    if (dongBase.includes(keyword)) return true;
+  }
+
+  // 단지명 매칭
+  if (listing.단지명 && listing.단지명.includes(keyword)) return true;
+
+  return false;
+}
+
+// 유사 검색용 가중치 점수 (구/동 > 단지명 > 소재지)
+function getKeywordMatchScore(keyword: string, listing: Listing): number {
+  let score = 0;
+
+  // 구 매칭 (정확 10, 부분 8)
+  if (listing.구) {
+    if (listing.구 === keyword) score = Math.max(score, 10);
+    else if (listing.구.includes(keyword)) score = Math.max(score, 8);
+  }
+
+  // 동 매칭 (정확 10, 부분 7)
+  if (listing.동) {
+    const dongBase = listing.동.split('_')[0];
+    if (dongBase === keyword) score = Math.max(score, 10);
+    else if (dongBase.includes(keyword)) score = Math.max(score, 7);
+  }
+
+  // 단지명 매칭 (5)
+  if (listing.단지명 && listing.단지명.includes(keyword)) {
+    score = Math.max(score, 5);
+  }
+
+  // 소재지 매칭 (1 - fallback only)
+  if (listing.소재지 && listing.소재지.includes(keyword)) {
+    score = Math.max(score, 1);
+  }
+
+  return score;
 }
 
 // 비키워드 필터 (가격, 건물유형, 거래방식)
@@ -236,10 +274,17 @@ function findSimilarListings(
   for (const listing of listings) {
     if (!matchesNonKeywordFilters(listing, searchQuery)) continue;
 
-    const text = getSearchableText(listing);
-    const matched = keywords.filter(k => text.includes(k));
+    let totalScore = 0;
+    const matched: string[] = [];
+    for (const k of keywords) {
+      const kScore = getKeywordMatchScore(k, listing);
+      if (kScore > 0) {
+        totalScore += kScore;
+        matched.push(k);
+      }
+    }
     if (matched.length > 0) {
-      scored.push({ listing, score: matched.length, matched });
+      scored.push({ listing, score: totalScore, matched });
     }
   }
 
@@ -301,11 +346,10 @@ export async function searchListings(query: string): Promise<string> {
 
   const searchQuery = parseSearchQuery(query);
 
-  // 정확한 필터링 (AND 매칭)
+  // 정확한 필터링 (AND 매칭 - 구/동/단지명 필드별 매칭)
   let filtered = listings.filter(listing => {
     if (searchQuery.keywords.length > 0) {
-      const text = getSearchableText(listing);
-      if (!searchQuery.keywords.every(k => text.includes(k))) return false;
+      if (!searchQuery.keywords.every(k => keywordMatchesListing(k, listing))) return false;
     }
     return matchesNonKeywordFilters(listing, searchQuery);
   });

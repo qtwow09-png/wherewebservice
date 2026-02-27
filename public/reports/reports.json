@@ -1,6 +1,26 @@
 {
   "reports": [
     {
+      "id": "20260227",
+      "title": "서울 부동산 주간 AI 리포트",
+      "subtitle": "2026.02.27",
+      "date": "2026-02-27",
+      "summary": "정부정책 x 시장심리 2축 분석 기반. 총 32,853건 매물 분석 완료. 서초구 최고가(11억 1,333만원). 마포구 최다 매물(2,936건).",
+      "tag": "제10호",
+      "fileName": "부동산_AI리포트_20260227.html",
+      "highlights": {
+        "policyDirection": "유지",
+        "marketSentiment": "상승",
+        "outlook": "중립"
+      },
+      "keyMetrics": {
+        "totalListings": 32853,
+        "avgPrice": "11억 1,333만원",
+        "weeklyChange": "-"
+      },
+      "featured": true
+    },
+    {
       "id": "20260220",
       "title": "서울 부동산 주간 AI 리포트",
       "subtitle": "2026.02.20",
@@ -18,7 +38,7 @@
         "avgPrice": "18억 2,417만원",
         "weeklyChange": "-"
       },
-      "featured": true
+      "featured": false
     },
     {
       "id": "20260211",
@@ -126,6 +146,6 @@
       "featured": false
     }
   ],
-  "nextPublishDate": "2026-02-26",
+  "nextPublishDate": "2026-03-05",
   "publishDay": "목요일"
 }
